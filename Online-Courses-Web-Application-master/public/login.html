@@ -1,0 +1,82 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+    <style>
+        input.ng-invalid {
+            border-color: red;
+            color: white;
+        }
+
+    </style>
+</head>
+
+<body>
+    
+    <center><h3>LOG IN</h3></center>
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"></h5>
+                    <form action="/LogIntoInstructorAccount" method="post" name="myForm" ng-app="myApp" ng-controller="myControl">
+                        <div class="form-group">
+                        <input class="form-control" name="myUsername" ng-model="username" type="text" placeholder="Username" required="true"><br />
+                        <input class="form-control" type="password" name="myPassword" ng-model="password" placeholder="Enter your Password" required>
+                        <center>
+                        <span style="color: red" ng-show="myForm.myUsername.$dirty && myForm.myUsername.$invalid"></span>
+                        </center>
+                        <center>
+                        <span style="color: red" ng-show="myForm.myPassword.$dirty && myForm.myPassword.$invalid"></span>
+                        </center>
+                        <br />
+                        <center><input type="submit" class="btn btn-primary mb-2" ng-disabled="myForm.myUsername.$invalid || myForm.myPassword.$invalid"><br>
+                        </center>
+                        </div>
+                    </form>
+                    <br />
+
+    <center>
+        <h4 style="color: darkred">Don't have an account? <a href="/register">Create one</a></h4>
+    
+    </center>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        var app = angular.module('myApp', []);
+
+        app.controller('myControl', function($scope, $http) {
+
+            $scope.check_validity = function(value) {
+                $http({
+                    method: 'POST',
+                    url: 'http://localhost:3000/checkValidUsername',
+                    data: {
+                        'username': value
+                    }
+                }).then(function(response) {
+                    $scope.validity = response.data['result'];
+                    $scope.color_validity = response.data['color'];
+                }, function(response) {
+
+                });
+            };
+        });
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.1/angular.min.js"></script>
+
+    <style>
+        input.ng-invalid {
+            background-color: maroon;
+            color: white;
+        }
+
+    </style>
+</head>
+
+<body>
+    <h3>Enter Your Details . . .</h3><hr><br>
+    <form action="/registerStudentAccount" method="post" name="myForm" ng-app="myApp" ng-controller="myControl">
+        Username : <input type="text" name="username"> </input> <br>
+
+        Password : <input type="password" name="password"> </input> <br>
+
+        FirstName : <input type="text" name="firstname"> </input> <br>
+
+        Last Name : <input type="text" name="lastname"> </input> <br>
+
+        Email : <input type="email" name="email"> </input> <br>
+
+        Mobile : <input type="number" name="mobile"> </input> <br>
+
+        <input type="submit">
+
+    </form>
+    
+    <h4 style="color: darkred">Already have an account? <a href="/login">LogIn</a></h4>
+
+
+
+</body>
+
+</html>

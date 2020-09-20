@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ASSIGNMENT><TOTAL>1</TOTAL>
+<QUESTION>
+<STATEMENT>Which is a framework ?</STATEMENT>
+<OPTION>stdio.h</OPTION>
+<OPTION>stdlib.h</OPTION>
+<OPTION>Bootstrap</OPTION>
+<OPTION>bits/stdc++.h</OPTION>
+<CORRECT>3</CORRECT>
+</QUESTION>
+</ASSIGNMENT>

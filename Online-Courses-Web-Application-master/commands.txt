@@ -1,0 +1,2 @@
+node server.js
+sudo systemctl start mongod.service

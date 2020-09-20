@@ -1,0 +1,304 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Instructor Dashboard</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+     
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css_dashboard/dashboard_css.css">
+        <link rel="stylesheet" href="css_dashboard/main2.css">
+    <link rel="stylesheet" href="css_dashboard/main1.css">
+
+    <style type="text/css">
+      .feedback {
+  background-color : yellow;
+  color: black;
+  padding: 10px 20px;
+}
+
+#mybutton {
+
+  font-size: 21px;
+  position: fixed;
+  bottom: 25px;
+  right: 10px;
+}
+html,body{
+  overflow-x: hidden !important;
+}
+    </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.1/angular.min.js"></script>
+
+  </head>
+  <body style="overflow-x: hidden !important;">
+
+  <div id="newCourse" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <center><h4 class="modal-title">CREATE A NEW COURSE</h4></center>
+      </div>
+      <div class="modal-body">
+
+          <form action="/createNewCourse" method="post" name="newCourseForm" ng-app="myApp" ng-controller="myControl" novalidate>
+                        <div class="form-group">
+                        <label>Course Instructor:</label>
+                        <input class="form-control" type="text" readonly="true" name="myInstructor" value="<%= ins_name %>" />
+                        <br />
+
+                        <input class="form-control" name="myCourseName" ng-pattern="/^[a-zA-Z\ ]{3,50}$/" ng-model="myCourseName" type="text" placeholder="Course Name" required><br />
+                        
+                        <center>
+                            <span ng-show="">Not a valid number!</span>
+
+                        <span style="color: red" ng-show="(newCourseForm.myCourseName.$dirty && newCourseForm.myCourseName.$invalid) || newCourseForm.myCourseName.$error.pattern">
+                          Invalid Course Name
+                        </span>
+                        </center>
+                        <br />
+                        <label>Course Subject:</label>
+                        <input type="text" class="form-control" name="myCourseSubject" ng-model="myCourseSubject" placeholder="Course Subject eg. Computer Science" required>
+                        <br />
+                        <span style="color: red" ng-show="newCourseForm.myCourseSubject.$invalid && newCourseForm.myCourseSubject.$dirty">
+                          Invalid Course Subject
+                        </span>
+                        <input type="text" style="width: 100%" class="form-control" data-role="tagsinput" name="myCourseTags" ng-model="myCourseTags" placeholder="Course Tags (Optional, Comma Seperated)" required>
+                        <br /><br />
+                        
+                          
+                        <center><input type="submit" value="Create a Course" class="btn btn-primary mb-2" ng-disabled="newCourseForm.myCourseName.$invalid || newCourseForm.myCourseSubject.$invalid"><br>
+                        </center>
+                        </div>
+                    </form>
+                    <br />
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+    <aside class="side-nav" id="show-side-navigation1">
+      <i class="fa fa-bars close-aside hidden-sm hidden-md hidden-lg" data-close="show-side-navigation1"></i>
+      <div class="heading">
+       
+        <div class="info" style="color: white;">
+          <h4 style="color: white;"><a href="#" style="color: white !important"><%= ins_name %></a></h4>
+          <p>Instructor Dashboard</p>
+        </div>
+      </div>
+     
+      <ul class="categories">
+        
+        <li><i class="fa fa-support fa-fw"></i><a href="#">My Profile</a>
+        <ul class="side-nav-dropdown">
+          <li style="color: white;">
+          USERNAME: <%= whoami %>
+          </li>
+        </ul>
+        </li>
+        <li><i class="fa fa-envelope fa-fw"></i><a href="#">My Courses</a>
+          <ul class="side-nav-dropdown">
+          <% for(var v=0;v < all_courses_info.length; v++){ 
+              if(all_courses_info[0] != "none"){
+           %>
+              <li style="color: white">
+                <form action="/modifyCourse" method="post" name="<%=all_courses_info[v].course_name %>">
+                <input type="text" name="myInstructor" value="<%= ins_name %>" hidden>
+                <input type="text" name="myCourseName" value="<%= all_courses_info[v].course_name %>" hidden>
+                <input type="text" name="myCourseSubject" value="<%= all_courses_info[v].subject %>" hidden>
+                <input type="text" name="myStatus" value="<%= all_courses_info[v].status %>" hidden>
+                <input type="text" name="myArticles" value="<%= all_courses_info[v].articles %>" hidden>
+                  <%=
+                  all_courses_info[v].course_name 
+                  %>&nbsp;
+                  <input type="submit" class="btn-primary sm" value="Edit">
+                
+                </form>
+                
+              </li>
+          <% } 
+          }
+            %>
+          </ul>
+        </li>
+        
+        
+    </aside>
+    <section id="contents">
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+              <i class="fa fa-align-right"></i>
+            </button>
+            <a class="navbar-brand" href="#">my<span class="main-color">Dashboard</span></a>
+          </div>
+          <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= whoami %> <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#profile_modal"><i class="fa fa-user-o fw"></i> My Profile</a></li>
+                  <li><a href="#"><i class="fa fa-envelope-o fw"></i> My courses</a></li>
+                  <li><a href="#"><i class="fa fa-question-circle-o fw"></i> Help</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="/logoutInstructor"><i class="fa fa-sign-out"></i> Log out</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <div class="welcome">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="content">
+                <h2 style="color: white">Welcome to Instructor Dashboard</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--<section class="statistics">
+        <div class="container-fluid">
+          <div class="row">
+            
+            <div class="col-md-5">
+              <div class="box">
+                <i class="fa fa-file fa-fw danger"></i>
+                <div class="info">
+                
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="box">
+                <i class="fa fa-users fa-fw success"></i>
+                <div class="info">
+                  <h3></h3> <span>Students</span>
+                  <p>Number of students taking your course.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="box">
+                <i class="fa fa-users fa-fw success"></i>
+                <div class="info">
+                  <h3></h3> <span>Students</span>
+                  <p>Number of students taking your course.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>-->
+      
+        <section class='statis text-center'>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="box bg-primary">
+                  <i class="fa fa-eye"></i>
+                  <% if(all_courses_info[0] != "none"){ %>
+                  <h3 style="color: white;"><%= all_courses_info.length %></h3>
+                <% }else{ %>
+                  <h3 style="color: white;">0</h3>
+                <% } %>
+                  <p class="lead">Courses offered by you in total (PRIVATE + PUBLIC)</p>
+                  
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="box danger">
+                  <i class="fa fa-user-o"></i>
+                  
+                    <% if(all_courses_info[0] != "none"){ %>
+                  <h3 style="color: white;"><% var num1=0; for(var x=0;x<all_courses_info.length;x++){ num1 = num1 + all_courses_info[x].articles; %>
+                    <% } %>
+                    <%= num1 %>
+                    <% }else{ %> <h3>0</h3> <% } %>
+                  </h3>
+                  <p class="lead">No. of files/course materials uploaded across all courses</p>
+                </div>
+              </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="box bg" style="background: black;">
+                  <i class="fa fa-eye"></i>
+                    <center><h3 style="color: white">MY COURSES</h3></center>
+                  
+                  <% for(var v=0;v < all_courses_info.length; v++){ 
+                        if(all_courses_info[0] != "none"){
+                    %>
+                  <form action="/modifyCourse" method="post" name="<%=all_courses_info[v].course_name %>">
+                <input type="text" name="myInstructor" value="<%= ins_name %>" hidden>
+                <input type="text" name="myCourseName" value="<%= all_courses_info[v].course_name %>" hidden>
+                <input type="text" name="myCourseSubject" value="<%= all_courses_info[v].subject %>" hidden>
+                <input type="text" name="myStatus" value="<%= all_courses_info[v].status %>" hidden>
+                <input type="text" name="myArticles" value="<%= all_courses_info[v].articles %>" hidden>
+                <div class="row">
+                <div class="form-group">
+                  
+                  <div class="col-sm-2"></div>
+                  <div class="col-sm-6">
+                    <input type="text" class="input-group-sm" name="noUse"  value="<%=all_courses_info[v].course_name%>" readonly>
+                  </div>
+                  <div class="col-sm-4">
+                    <input type="submit" class="input-group-sm btn-success btn" value="Edit">
+                  </div>
+                  <div class="col-sm-2"></div>
+                </div>
+                </div><br />
+                </form>
+                
+                <% } } %>
+                 
+                </div> 
+                  
+                  
+                </div></div></div>
+              </div>
+          </div>
+          </div>
+        </section>
+      </section>
+      <div id="mybutton">
+      <a class="main-button icon-button" data-dismiss="modal" data-toggle="modal" data-target="#newCourse" href="#">Add a New Course +</a>
+
+      </div>
+      <script type="text/javascript" src="js/prevent.js"></script>
+      <script src='http://code.jquery.com/jquery-latest.js'></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+      <script src='dashboard_js/main1.js'></script>
+      <script src='dashboard_js/main2.js'></script>
+
+      <script src='dashboard_js/main.js'></script>
+      <script type="text/javascript">
+        var app = angular.module('myApp',[]);
+        app.controller('myControl',function($scope){
+          $scope.user='Angular';
+        });
+      </script>
+
+      </body>
+    </html>

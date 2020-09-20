@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ASSIGNMENT><TOTAL>1</TOTAL>
+<QUESTION>
+<STATEMENT>Which of the following is true ?</STATEMENT>
+<OPTION>Merge sort time complexity O(logN)</OPTION>
+<OPTION>Merge sort time complexity O(N)</OPTION>
+<OPTION>Merge sort time complexity O(NlogN)</OPTION>
+<OPTION>None</OPTION>
+<CORRECT>3</CORRECT>
+</QUESTION>
+</ASSIGNMENT>

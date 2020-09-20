@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ASSIGNMENT><TOTAL>1</TOTAL>
+<QUESTION>
+<STATEMENT>Which is a good architecture for compilers ?</STATEMENT>
+<OPTION>Pipe filter</OPTION>
+<OPTION>MVC</OPTION>
+<OPTION>Client server</OPTION>
+<OPTION>Blackboard update</OPTION>
+<CORRECT>1</CORRECT>
+</QUESTION>
+</ASSIGNMENT>

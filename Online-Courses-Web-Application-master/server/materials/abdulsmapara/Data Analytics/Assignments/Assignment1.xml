@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ASSIGNMENT><TOTAL>2</TOTAL>
+<QUESTION>
+<STATEMENT>Which is a programming language ?</STATEMENT>
+<OPTION>HTML</OPTION>
+<OPTION>Bootstrap</OPTION>
+<OPTION>C</OPTION>
+<OPTION>None</OPTION>
+<CORRECT>3</CORRECT>
+</QUESTION>
+<QUESTION>
+<STATEMENT>Which is a scripting language ?</STATEMENT>
+<OPTION>C</OPTION>
+<OPTION>C++</OPTION>
+<OPTION>Java</OPTION>
+<OPTION>None of these</OPTION>
+<CORRECT>4</CORRECT>
+</QUESTION>
+</ASSIGNMENT>

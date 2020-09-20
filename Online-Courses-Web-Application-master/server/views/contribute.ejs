@@ -1,0 +1,332 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>COURSES | Instructor Dashboard | <%= whoami %></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+     
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css_dashboard/dashboard_css.css">
+        <link rel="stylesheet" href="css_dashboard/main2.css">
+    <link rel="stylesheet" href="css_dashboard/main1.css">
+
+    <style type="text/css">
+      .feedback {
+  background-color : yellow;
+  color: black;
+  padding: 10px 20px;
+}
+
+#mybutton {
+
+  font-size: 21px;
+  position: fixed;
+  bottom: 25px;
+  right: 10px;
+}
+.card {
+  background: #DDD;
+  border-radius: 2px;
+  display: inline-block;
+  margin: 1rem;
+  position: relative;
+
+}
+
+.card-5 {
+  box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+}
+
+
+html,body{
+  overflow-x: hidden !important;
+}
+    </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.1/angular.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script>
+    $(document).ready(function() {
+    var max_fields = 1000;
+    var wrapper = $(".container1");
+    var add_button = $(".add_form_field");
+
+    var x = 1;
+    $(add_button).click(function(e) {
+        e.preventDefault();
+        if (x < max_fields) {
+            x++;
+            $(wrapper).append('<div id='+x+'><center><a href="#" class="delete form-control btn-danger">Delete the question below</a></center><br /><input type="text" class="form-control" placeholder="QUESTION" name="question[]" required /><br /><input type="text" class="form-control" placeholder="OPTION 1" name="option1[]" required /><br /><input type="text" class="form-control" placeholder="OPTION 2" name="option2[]" required /><br /><input type="text" class="form-control" placeholder="OPTION 3" name="option3[]" required /><br /><input type="text" class="form-control" placeholder="OPTION 4" name="option4[]" required /><br /><input type="number" class="form-control" placeholder="CORRECT OPTION" name="correct[]" max="4" min="1" required><br /></div>'); //add input box
+        } else {
+            alert('You Reached the limits')
+        }
+    });
+
+    $(wrapper).on("click", ".delete", function(e) {
+        e.preventDefault();
+        document.getElementById(x).remove();
+        x--;
+    })
+});
+</script>
+
+
+  </head>
+  <body style="overflow-x: hidden !important;">
+
+
+
+  <% if (message != "none" && message[0] != "none"){ %>
+<div id="message_modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <center><h4 class="modal-title">MESSAGE</h4></center>
+      </div>
+      <div class="modal-body">
+
+      		<p style="color: black"><%= message %></p>
+      		<% if(message != "none"){ message = "none"; } else if(message[0] != "none"){ message[0] = "none";} %>
+
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<% } %>
+<div id="uploadForm" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <center><h4 class="modal-title">UPLOAD A FILE</h4></center>
+      </div>
+      <div class="modal-body">
+      	<form action="/uploadFile" name="uploadForm" method="post" enctype="multipart/form-data">
+      		<label>FILE: </label>
+      		<input type="file"  multiple="true" class="form-control" name="articles[]" required /><br />
+      		<input type="submit" name="submitFile" value="UPLOAD" class="form-control btn-success" />
+      	</form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div id="uploadAssignment" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <center><h4 class="modal-title">ADD A MCQ ASSIGNMENT</h4></center>
+      </div>
+      <div class="modal-body">
+        <center><h5>Note that the Assignment supported is MCQ based and each MCQ must have exactly 4 options out of which only one is correct.</h5></center>
+        <form action="/uploadAssignment" name="uploadForm" method="post" >
+          <input type="text" class="form-control" placeholder="QUESTION" name="question[]" required /><br />
+          <input type="text" class="form-control" placeholder="OPTION 1" name="option1[]" required /><br />
+          <input type="text" class="form-control" placeholder="OPTION 2" name="option2[]" required /><br />
+          <input type="text" class="form-control" placeholder="OPTION 3" name="option3[]" required /><br />
+          <input type="text" class="form-control" placeholder="OPTION 4" name="option4[]" required /><br />
+          <input type="number" class="form-control" placeholder="CORRECT OPTION" name="correct[]" max="4" min="1" required><br />
+          <div class="container1"></div>
+              <button class="add_form_field form-control btn-primary">Add New Question &nbsp; 
+                <span style="font-size:16px; font-weight:bold;">+</span>
+              </button>
+            <br />
+          <input type="submit" name="addAssignment" value="ADD ASSIGNMENT" class="form-control btn-success" />
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+  	<nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+              <i class="fa fa-align-right"></i>
+            </button>
+            <a class="navbar-brand" href="/inst_overview"><span class="main-color">Dashboard</span></a>
+          </div>
+          <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= whoami %> <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#profile_modal"><i class="fa fa-user-o fw"></i> My Profile</a></li>
+                  <li><a href="#"><i class="fa fa-envelope-o fw"></i> My courses</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="/logoutInstructor"><i class="fa fa-sign-out"></i>Log out</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <section id="section1">
+      	<div class="row">
+      	<div class="col-sm-2"></div>
+      	<div class="col-sm-8">
+      		<div class="card card-5" style="width: 100%;height:content">
+      			<center><h3 style="color: black">COURSE DETAILS - <%= course_name %></h3></center>
+      			<center><h5 style="color: black;"><i>Instructor:</i>&nbsp;<%= ins_name %></h5></center>
+      			<form name="editCourse" method="post" action="/editCourse" ng-app="myApp" ng-controller="myControl" novalidate>
+      				<label class="col-sm-2 col-form-label">SUBJECT :</label>
+      				 <div class="col-sm-6 input-group">
+      					<input type="text" class="form-control ed" id="sub" readonly="true" name="myCourseSubject" ng-model="myCourseSubject" required>
+      					  <a class="input-group-addon btn-success btn" onclick="$('#sub').prop('readonly',false);$('#change').prop('disabled',false);" style="background: green;color: white;">EDIT</a>
+      					  <span style="color: red" ng-show="editCourse.myCourseSubject.$invalid && editCourse.myCourseSubject.$dirty">
+                          Invalid Course Subject
+                        </span>
+      				</div><br /><br /><br />
+      				<label class="col-sm-2 col-form-label">TAGS :</label>
+      				 <div class="col-sm-6 input-group">
+      					<input type="text" placeholder="TAGS (OPTIONAL)" class="form-control ed" data-role="tagsinput" ng-model="myTags" id="tags" name="myTags" value="<%= tags %>" disabled>
+
+      					  <a class="input-group-addon btn-success btn" onclick="$('#tags').prop('disabled',false);document.getElementById('tags').setAttribute('data-role','tagsinput');$('#change').prop('disabled',false);" style="background: green;color: white;">EDIT</a>
+      					
+      				</div>
+      				<br />
+      				<label class="col-sm-3 col-form-label"></label>
+
+      				<div class="col-sm-4 input-group">
+      				<input type="submit" onclick="$('#tags').prop('disabled',false);" class="form-control" value="MODIFY" id="change" style="background: green;color: white" ng-disabled="editCourse.myCourseSubject.$invalid || (!editCourse.myCourseSubject.$dirty)">
+      				</div><br /><br />
+      			</form>
+      			<% if(files[0] != "none"){ %>
+      			<center><h3>ALL UPLOADS for this course</h3></center>
+      			<% } %>
+      			<% for(var v = 0;v < files.length; v++){ if(files[0] != "none"){ %>
+
+      			<label class="col-sm-2"></label>
+      			<label class="col-sm-1 col-form-label"><%= v+1 %></label>
+      				 <div class="col-sm-6 input-group">
+      				
+      					<input type="text" readonly="true" name="<%= files[v] %>" value="<%= files[v] %>" />
+      					<a href="http://localhost:3000/viewFile?filename=<%= files[v] %>&course_name=<%=course_name %>&user=<%=whoami%>" class="input-group-addon btn-success btn" style="background: green;color: white">VIEW</a>
+      					<a href="/deleteUploadedFile?filename=<%= files[v] %>&user=<%= whoami %>&course_name=<%=course_name%>" style="background: red;color: white" class="input-group-addon btn-danger btn" >DELETE</a>
+      				</div>
+      			<% } } %><br />
+            <% if (assignments[0] != 'none'){ %>
+
+              <center><h3>ALL ASSIGNMENTS FOR THIS COURSE</h3></center>
+              <% for(var v = 0;v < assignments.length;v++){ %>
+                  <label class="col-sm-2"></label>
+              <label class="col-sm-1 col-form-label"><%= v+1 %></label>
+                 <div class="col-sm-6 input-group">
+                
+                  <input type="text" readonly="true" name="<%= assignments[v] %>" value="Assignment <%= v+1  %>" />
+                  <a href="http://localhost:3000/viewAssignment?Assignment=<%= v+1 %>&course_name=<%=course_name %>&user=<%=whoami%>&instructor=<%=whoami%>" class="input-group-addon btn-success btn" style="background: green;color: white">VIEW</a>
+                  
+                </div>
+              <% } %>
+            <% } %>
+
+      			<section class='statis text-center'>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-3">
+                <div class="box success">
+                  <i class="fa fa-eye"></i>
+                  <h3><%= enroll_count %></h3>
+                  <p class="lead">No. of students enrolled</p>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="box" style="background: black">
+                  <i class="fa fa-eye"></i>
+                  <h3 style="color: white"><%= status %></h3>
+                  <p class="lead">Current Status of this course</p>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="box success">
+                  <i class="fa fa-eye"></i>
+                  <% if(files[0] == "none"){ %><h3>0</h3><% } else{ %>
+                  <h3><%= files.length %></h3>
+                  <% } %>
+                  <p class="lead">No. of uploads in this course</p>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="box" style="background-color: black;">
+                  <i class="fa fa-eye"></i>
+                  <h3 style="color: white">
+                  <% if(assignments[0] != 'none'){ %>
+                  <%= assignments.length %>
+                  <% }else{ %>
+                  0
+                  <% } %></h3>
+                  <p class="lead">Number of assignments</p>
+                </div>
+              </div>
+        </div>
+        </div>
+        </section>
+
+      		</div>
+      	</div>
+	  	</div>
+      <br /><br />
+      </section>
+      <div id="mybutton">
+      <% if(status == "private"){ %>
+      <a class="main-button icon-button" href="/publishCourse">PUBLISH COURSE</a>
+      <% } %>
+      <a class="main-button icon-button" data-dismiss="modal" data-toggle="modal" data-target="#uploadForm" href="#">UPLOAD MATERIAL</a>
+
+      <a class="main-button icon-button" data-dismiss="modal" data-toggle="modal" data-target="#uploadAssignment" href="#">ADD ASSIGNMENT</a>
+      </div>
+      <script type="text/javascript" src="js/prevent.js"></script>
+      <script src='http://code.jquery.com/jquery-latest.js'></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+      <script src='dashboard_js/main1.js'></script>
+      <script src='dashboard_js/main2.js'></script>
+
+      <script src='dashboard_js/main.js'></script>
+      <script type="text/javascript">
+        var app = angular.module('myApp',[]);
+        app.controller('myControl',function($scope){
+          $scope.user='Angular';
+          $scope.myCourseSubject='<%=subject%>';
+          $scope.myTags='<%=tags%>';
+        });
+      </script>
+      <script type="text/javascript">
+        var app = angular.module('myApp2',[]);
+        app.controller('myControl2',function($scope){
+          $scope.user='Angular';
+        });
+      </script>
+      <script type="text/javascript">
+			 
+			 $(window).load(function(){
+			   $('#message_modal').modal('show');
+			    }); 
+			 
+		</script>
+      </body>
+    </html>
